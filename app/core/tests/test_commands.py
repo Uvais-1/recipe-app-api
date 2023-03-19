@@ -10,9 +10,10 @@ from django.test import SimpleTestCase
 @patch('core.management.commands.wait_for_db.Command.check')
 class CommandTests(SimpleTestCase):
     """TEst Example"""
+
     def test_wait_for_db_ready(self, patched_check):
        """Test waitong for db"""
-       patched_check.return_value=True
+       patched_check.return_value = True
 
        call_command('wait_for_db')
 
@@ -21,9 +22,10 @@ class CommandTests(SimpleTestCase):
     @patch('time.sleep')
     def test_wait_for_db_delay(self, patched_sleep, patched_check):
         """TEst waiting for database when getting Operational Error"""
-        patched_check.side_effect=[Psycopg2Error] * 2 + \
+
+        patched_check.side_effect = [Psycopg2Error] * 2 + \
             [OperationalError] * 3 + [True]
-        
+
         call_command('wait_for_db')
 
         self.assertEqual(patched_check.call_count, 6)
