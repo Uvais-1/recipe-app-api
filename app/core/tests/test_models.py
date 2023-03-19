@@ -31,3 +31,19 @@ class ModelTests(TestCase):
         for email, expected in sample_emails:
             user=get_user_model().objects.create_user(email,'sample123')
             self.assertAlmostEqual(user.email, expected)
+
+
+    def test_new_user_witout_email_raises_error(self):
+        """Test that creating a user witjout an email raises a ValueError."""
+        with self.assertRaises(ValueError):
+            get_user_model().objects.create_user('', 'test123')
+
+    def test_create_super_user(self):
+        """Test creating a super user"""
+        user = get_user_model().objects.create_superuser(
+            'test1@example.com',
+            'test123',
+        )
+
+        self.assertTrue(user.is_superuser)
+        self.assertTrue(user.is_staff)
